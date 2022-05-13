@@ -4,7 +4,8 @@
   "info": {
     "singularName": "delivery-date",
     "pluralName": "delivery-dates",
-    "displayName": "DeliveryDate"
+    "displayName": "DeliveryDate",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -12,7 +13,14 @@
   "pluginOptions": {},
   "attributes": {
     "date": {
-      "type": "date"
+      "type": "date",
+      "unique": true
+    },
+    "available_products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::available-product.available-product",
+      "mappedBy": "delivery_date"
     }
   }
 }

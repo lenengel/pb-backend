@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "available_products",
+  "info": {
+    "singularName": "available-product",
+    "pluralName": "available-products",
+    "displayName": "AvailableProduct",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "quantity": {
+      "type": "decimal"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    },
+    "delivery_date": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::delivery-date.delivery-date",
+      "inversedBy": "available_products"
+    }
+  }
+}
