@@ -12,6 +12,12 @@ module.exports = {
   async create(ctx) { // CREATE ORDER
     let orderdProducts = [];
     try {
+      // TODO Check: is product available, otherwise response code ~400
+      const available_products = await strapi.entityService.findMany('api::available-product.available-product', {
+        populate: ["product", "delivery_date"]});
+      
+        console.log(available_products);
+
       for (const order of ctx.request.body.data.order) {
         const response = await strapi.service('api::ordered-product.ordered-product').create({
           data: {
@@ -20,6 +26,21 @@ module.exports = {
           product: order.id,
         }});
         orderdProducts.push(response.id);
+
+        const product = available_products.find(product => product.product.id == order.id);
+        let updateQuantity = (product.quantity - ((parseInt(order.quantity)) * (parseFloat(order.unit))));
+        
+        if(updateQuantity<0) {
+          ctx.response.body = {err: "Parameter quantity is to high."};
+          ctx.response.status = 400;
+          return;
+        }
+
+        const responseUpdate = await strapi.entityService.update('api::available-product.available-product', product.id, {
+            data: {
+              quantity: updateQuantity
+            },
+          });
       }
 
       const responseOrder = await strapi.service('api::order.order').create({

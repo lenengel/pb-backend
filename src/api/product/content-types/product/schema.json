@@ -50,6 +50,9 @@
       "relation": "manyToMany",
       "target": "api::category.category",
       "inversedBy": "products"
+    },
+    "subtitle": {
+      "type": "string"
     }
   }
 }
